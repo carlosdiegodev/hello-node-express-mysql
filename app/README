@@ -1,0 +1,16 @@
+O objetivo deste projeto é mostrar que é possível criar uma aplicação 
+sem necessariamente ter instalado o framework.
+
+Por exemplo, aqui iremos usar o NODE. Para tanto vamos seguir o exemplo abaixo:
+
+0- Partindo do diretório completamente vazio, com excessão deste arquivo README e index.js. 
+
+1- Crie uma pasta onde desejar e de o nome do seu projeto para ela
+2- Rodar uma imagem base pelo docker run, substituindo o volume pelo seu caminho
+    docker run --rm -it -v $(pwd)/:/usr/src/app -p 3000:3000 node:latest bash
+
+3- Uma vez que a imagem estiver rodando, estaremos dentro do container, e entao 
+executaremos os seguintes comandos:
+    npm init
+    npm install express --save
+

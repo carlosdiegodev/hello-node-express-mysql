@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  #Subir aplicação node
+  app:
+    build:
+      context: app
+    container_name: app
+    #entrypoint: dockerize -wait tcp://mysql:3306 -timeout 10s docker-entrypoint.sh
+    entrypoint: wait-for mysql:3306 -t 10 -- docker-entrypoint.sh node index.js
+    networks:
+      - node-network
+    volumes:
+      - ./app:/usr/src/app
+    tty: true
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysql
+
+
+
+  #Subir instancia do mysql, persistindo o volume de dados...
+  mysql:
+    image: mysql:5.7
+    command: --innodb-use-native-aio=0
+    container_name: mysql
+    #restart: always
+    tty: true
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=nodedb
+      - MYSQL_ROOT_PASSWORD=admin
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=admin
+    networks:
+      - node-network
+    ports:
+      - "3306:3306"
+
+networks:
+  node-network:
+    driver: bridge
+    
